@@ -348,3 +348,6 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+solarcoffe.backend/.vscode/tasks.json
+solarcoffe.backend/.vscode/launch.json
+solarcoffe.backend/packages-microsoft-prod.deb
