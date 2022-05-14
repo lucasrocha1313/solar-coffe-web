@@ -19,8 +19,8 @@ namespace SolarCoffe.Web.Controllers
         public ActionResult GetProduct()
         {
             _logger.LogInformation("Getting all products");
-            _productService.GetAllProducts();
-            return Ok("");
+            var product = _productService.GetAllProducts();
+            return Ok(product);
         }
     }
 }
