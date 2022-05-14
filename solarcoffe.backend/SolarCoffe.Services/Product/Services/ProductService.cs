@@ -16,18 +16,35 @@ namespace SolarCoffe.Services.Product.Services
 
         public ServiceResponse<Data.Models.Product> ArchiveProduct(int id)
         {
-            try{
+            try
+            {
                 var productToArchive = _dbContext.Products.Find(id);
-                productToArchive.IsArchived = true;
-                _dbContext.SaveChanges();
-                return new ServiceResponse<Data.Models.Product> {
-                    Data = productToArchive,
+                if (productToArchive != null)
+                {
+                    productToArchive.IsArchived = true;
+                    _dbContext.SaveChanges();
+                    return new ServiceResponse<Data.Models.Product>
+                    {
+                        Data = productToArchive,
+                        Time = DateTime.Now,
+                        Message = "Saved new product",
+                        IsSuccess = true
+                    };
+                }
+
+                return new ServiceResponse<Data.Models.Product>
+                {
+                    Data = null,
                     Time = DateTime.Now,
-                    Message = "Saved new product",
-                    IsSuccess = true
+                    Message = "The product was not found to archive",
+                    IsSuccess = false
                 };
-            } catch(Exception ex) {
-                return new ServiceResponse<Data.Models.Product> {
+
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse<Data.Models.Product>
+                {
                     Data = null,
                     Time = DateTime.Now,
                     Message = "Error saving product: " + ex.Message,
@@ -35,7 +52,7 @@ namespace SolarCoffe.Services.Product.Services
                 };
             }
         }
-        
+
         public ServiceResponse<Data.Models.Product> CreateProduct(Data.Models.Product product)
         {
             try
@@ -48,18 +65,22 @@ namespace SolarCoffe.Services.Product.Services
                     QuantityOnHand = 0,
                     IdealQuantity = 10
                 };
-                _dbContext.ProductInventories.Add(newInventory);                
+                _dbContext.ProductInventories.Add(newInventory);
 
                 _dbContext.SaveChanges();
 
-                return new ServiceResponse<Data.Models.Product> {
+                return new ServiceResponse<Data.Models.Product>
+                {
                     Data = product,
                     Time = DateTime.Now,
                     Message = "Saved new product",
                     IsSuccess = true
                 };
-            } catch(Exception ex) {
-                return new ServiceResponse<Data.Models.Product> {
+            }
+            catch (Exception ex)
+            {
+                return new ServiceResponse<Data.Models.Product>
+                {
                     Data = product,
                     Time = DateTime.Now,
                     Message = "Error saving product: " + ex.Message,
@@ -68,14 +89,8 @@ namespace SolarCoffe.Services.Product.Services
             }
         }
 
-        public List<Data.Models.Product> GetAllProducts()
-        {
-            return _dbContext.Products.ToList();
-        }
+        public List<Data.Models.Product> GetAllProducts() => _dbContext.Products.ToList();
 
-        public Data.Models.Product GetProductById(int id)
-        {
-            return _dbContext.Products.Find(id);
-        }
+        public Data.Models.Product? GetProductById(int id) => _dbContext.Products.Find(id);
     }
 }
