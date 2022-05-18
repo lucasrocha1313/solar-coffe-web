@@ -1,5 +1,7 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SolarCoffe.Services.Product.Interfaces;
+using SolarCoffe.Web.Dtos;
 
 namespace SolarCoffe.Web.Controllers
 {
@@ -8,11 +10,13 @@ namespace SolarCoffe.Web.Controllers
     {
         private readonly ILogger<ProductController> _logger;
         private readonly IProductService _productService;
+        private readonly IMapper _mapper;
 
-        public ProductController(ILogger<ProductController> logger, IProductService productService)
+        public ProductController(ILogger<ProductController> logger, IProductService productService, IMapper mapper)
         {
             _logger = logger;
             _productService = productService;
+            _mapper = mapper;
         }
 
         [HttpGet("/api/product")]
@@ -20,7 +24,7 @@ namespace SolarCoffe.Web.Controllers
         {
             _logger.LogInformation("Getting all products");
             var product = _productService.GetAllProducts();
-            return Ok(product);
+            return Ok(_mapper.Map<List<ProductDto>>(product));
         }
     }
 }
