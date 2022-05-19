@@ -1,5 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using SolarCoffe.Data;
+using SolarCoffe.Services.Customer.Interfaces;
+using SolarCoffe.Services.Customer.Services;
+using SolarCoffe.Services.Inventory.Interfaces;
+using SolarCoffe.Services.Inventory.Services;
+using SolarCoffe.Services.Order.Interfaces;
+using SolarCoffe.Services.Order.Services;
 using SolarCoffe.Services.Product.Interfaces;
 using SolarCoffe.Services.Product.Services;
 using SolarCoffe.Web.Extensions;
@@ -20,6 +26,9 @@ builder.Services.AddDbContext<SolarDbContext>(opts =>
 builder.Services.AddAutoMapperConfig();
 
 builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<ICostumerService, CustomerService>();
+builder.Services.AddTransient<IInventoryService, InventoryService>();
+builder.Services.AddTransient<IOrderService, OrderService>();
 
 var app = builder.Build();
 
