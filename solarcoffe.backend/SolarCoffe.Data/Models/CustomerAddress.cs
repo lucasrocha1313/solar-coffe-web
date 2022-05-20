@@ -15,7 +15,7 @@ namespace SolarCoffe.Data.Models
         public string City { get; set; }
         [MaxLength(2)]
         public string State { get; set; }
-        [MaxLength(2)]
+        [MaxLength(10)]
         public string PostalCode { get; set; }
         [MaxLength(40)]
         public string Country { get; set; }        
