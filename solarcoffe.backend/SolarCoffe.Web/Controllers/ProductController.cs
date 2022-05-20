@@ -26,5 +26,12 @@ namespace SolarCoffe.Web.Controllers
             var product = _productService.GetAllProducts();
             return Ok(_mapper.Map<List<ProductDto>>(product));
         }
+
+        [HttpPatch("/api/product/{id}")]
+        public ActionResult ArchiveProduct(int id) {
+            _logger.LogInformation($"Archiving product {id}");
+            var archived = _productService.ArchiveProduct(id);
+            return Ok(archived);
+        }
     }
 }
