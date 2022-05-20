@@ -26,7 +26,7 @@ namespace SolarCoffe.Services.Order.Services
             _inventorySerice = inventorySerice;
         }
 
-        public ServiceResponse<SalesOrder> GenerateInvoiceOrder(SalesOrder order)
+        public ServiceResponse<SalesOrder> GenerateOpenOrder(SalesOrder order)
         {
             foreach (var item in order.SalesOrderItems)
             {
