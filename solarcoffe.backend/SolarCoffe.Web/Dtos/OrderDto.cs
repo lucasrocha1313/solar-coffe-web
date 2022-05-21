@@ -1,6 +1,6 @@
 namespace SolarCoffe.Web.Dtos
 {
-    public class OrderModel
+    public class OrderDto
     {
         public int Id { get; set; }
         public bool IsPaid { get; set; }
