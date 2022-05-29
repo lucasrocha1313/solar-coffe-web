@@ -34,7 +34,7 @@
 <script lang="ts">
 import SolarButton from './SolarButton.vue'
 export default {
-  components: { SolarButton },
+    components: { SolarButton },
     name: 'SideMenu',
 }
 </script>
