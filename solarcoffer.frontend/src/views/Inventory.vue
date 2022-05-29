@@ -4,6 +4,14 @@
             Inventory Dashboard
         </h1>
         <hr/>
+        <div class="inventory-actions">
+            <solar-button @click.native="showNewProductModel" id="addNewBtn">
+                Add new item
+            </solar-button>
+            <solar-button @click.native="showShipmentModel" id="receiveShipmentBtn">
+                Receive Shipment
+            </solar-button>
+        </div>
         <table id="inventory-table" class="table">
             <th>Item</th>
             <th>Quantity On-Hand</th>
@@ -33,26 +41,43 @@
                 </td>
             </tr>
         </table>
+
+        <shipment-modal
+            v-if="isShipmentVisible"
+            :inventory="inventory"
+            @close="closeModal"/>
     </div>
 </template>
 
 <script lang="ts">
     import { defineComponent } from "vue"
+    import SolarButton from "@/components/SolarButton.vue"
+    import ShipmentModal from "@/components/modals/ShipmentModal.vue"
 
     export default defineComponent({
         name: 'Inventory',
-        components:{},
+        components:{ SolarButton, ShipmentModal },
         methods: {
             currencyUSD(value: number) {
                 if(isNaN(value)) {
                     return '-'
                 }
-
                 return `$${value.toFixed(2)}`
+            },
+            showNewProductModel() {
+            },
+            showShipmentModel() {
+
+            },
+            closeModal() {
+                this.isShipmentVisible= false
+                this.isNewProductVisible = false
             }
         },
         data() {
             return {
+                isShipmentVisible: true,
+                isNewProductVisible: true,
                 inventory: [
                     {
                         id: 1,
