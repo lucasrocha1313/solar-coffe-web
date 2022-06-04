@@ -42,9 +42,15 @@
             </tr>
         </table>
 
+        <new-product-modal
+            v-if="isNewProductVisible"
+            @save:product="saveNewProduct"
+            @close="closeModal"/>
+
         <shipment-modal
             v-if="isShipmentVisible"
             :inventory="inventory"
+            @save:shipment="saveNewShipment"
             @close="closeModal"/>
     </div>
 </template>
@@ -53,10 +59,13 @@
     import { defineComponent } from "vue"
     import SolarButton from "@/components/SolarButton.vue"
     import ShipmentModal from "@/components/modals/ShipmentModal.vue"
+    import NewProductModal from "@/components/modals/NewProductModal.vue"
+    import { IShipment } from "@/types/Shipment"
+    import { IProduct } from "@/types/Product"
 
     export default defineComponent({
         name: 'Inventory',
-        components:{ SolarButton, ShipmentModal },
+        components:{ SolarButton, ShipmentModal, NewProductModal },
         methods: {
             currencyUSD(value: number) {
                 if(isNaN(value)) {
@@ -65,9 +74,18 @@
                 return `$${value.toFixed(2)}`
             },
             showNewProductModel() {
+                this.isNewProductVisible = true
             },
             showShipmentModel() {
-
+                this.isShipmentVisible = true
+            },
+            saveNewProduct(newProduct: IProduct) {
+                console.log("saveNewProduct")
+                console.log(newProduct)
+            },
+            saveNewShipment(shipment: IShipment) {
+                console.log("saveNewShipment")
+                console.log(shipment)
             },
             closeModal() {
                 this.isShipmentVisible= false
@@ -76,8 +94,8 @@
         },
         data() {
             return {
-                isShipmentVisible: true,
-                isNewProductVisible: true,
+                isShipmentVisible: false,
+                isNewProductVisible: false,
                 inventory: [
                     {
                         id: 1,
