@@ -6,7 +6,7 @@
         <template v-slot:body>
             <label for="product">Product Received:</label>
             <select v-model="selectedroduct" class="shipment-items" id="product">
-                <option disabled value="">Please select one</option>
+                <label disabled value="">Please select one</label>
                 <option v-for="item in inventory" :value="item" :key="item.product.id">
                     {{item.product.name}}
                 </option>
@@ -36,6 +36,7 @@ import { defineComponent, PropType } from 'vue'
 import SolarButton from "../SolarButton.vue";
 import SolarModal from "@/components/modals/SolarModal.vue"
 import { IProductInventory } from "@/types/Product";
+import {IShipment} from "@/types/Shipment"
 
 export default defineComponent({
     components: { SolarButton, SolarModal},
@@ -49,6 +50,14 @@ export default defineComponent({
     methods: {
         close() {
             this.$emit("close")
+        },
+        save() {
+            let shipment: IShipment = {
+                productId: this.selectedroduct.id,
+                adjustment: this.qtyReceived
+            };
+
+            this.$emit("save:shipment", shipment);
         }
     },
     data() {
