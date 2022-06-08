@@ -61,7 +61,10 @@
     import ShipmentModal from "@/components/modals/ShipmentModal.vue"
     import NewProductModal from "@/components/modals/NewProductModal.vue"
     import { IShipment } from "@/types/Shipment"
-    import { IProduct } from "@/types/Product"
+    import { IProduct, IProductInventory} from "@/types/Product"
+    import { InventoryService } from "@/services/InventoryService"
+
+    const inventoryService = new InventoryService()
 
     export default defineComponent({
         name: 'Inventory',
@@ -83,52 +86,28 @@
                 console.log("saveNewProduct")
                 console.log(newProduct)
             },
-            saveNewShipment(shipment: IShipment) {
-                console.log("saveNewShipment")
-                console.log(shipment)
+            async saveNewShipment(shipment: IShipment) {
+                await inventoryService.updateInventoryQuantity(shipment)
+                this.isShipmentVisible = false
+                await this.initialize()
             },
             closeModal() {
                 this.isShipmentVisible= false
                 this.isNewProductVisible = false
+            },
+            async initialize() {
+                this.inventory =  await inventoryService.getInventory()
             }
         },
         data() {
             return {
                 isShipmentVisible: false,
                 isNewProductVisible: false,
-                inventory: [
-                    {
-                        id: 1,
-                        product: {
-                            id: 1,
-                            createdOn: new Date(),
-                            updatedOn: new Date(),
-                            name: 'Some Product',
-                            description: 'Good stuff',
-                            price: 100,
-                            isTaxable: true,
-                            isArchived: false
-                        },
-                        quantityOnHand: 2,
-                        idealQuantity: 5
-                    },
-                    {
-                        id: 2,
-                        product: {
-                            id: 2,
-                            createdOn: new Date(),
-                            updatedOn: new Date(),
-                            name: 'Some Product 2',
-                            description: 'Good stuff 2',
-                            price: 200,
-                            isTaxable: false,
-                            isArchived: false
-                        },
-                        quantityOnHand: 4,
-                        idealQuantity: 10
-                    }
-                ]
+                inventory: []
             }
+        },
+        async created() {
+            await this.initialize();
         }        
     })
 </script>
