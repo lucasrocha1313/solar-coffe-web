@@ -47,14 +47,14 @@ namespace SolarCoffe.Services.Inventory.Services
                     .ProductInventories
                     .Include(pi => pi.Product)
                     .First(pi => pi.Product.Id == id);
-                
-                inventory.QuantityOnHand += adjustment;
 
                 try {
                     CreateSnapshot(inventory);
                 } catch(Exception e) {
                     _logger.LogError($"Error creating snapshot: {e.Message}");
                 }
+
+                inventory.QuantityOnHand += adjustment;
 
                 _db.SaveChanges();
                 return new ServiceResponse<ProductInventory>{
@@ -76,7 +76,7 @@ namespace SolarCoffe.Services.Inventory.Services
         private void CreateSnapshot(ProductInventory productInventory)
         {
             var snapshot = new ProductInventorySnapshot {
-                SnapshotTime = DateTime.Now,
+                SnapshotTime = DateTime.UtcNow,
                 Product = productInventory.Product,
                 QuantityOnHand =  productInventory.QuantityOnHand
             };
