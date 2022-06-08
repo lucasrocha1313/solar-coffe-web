@@ -9,12 +9,14 @@ namespace SolarCoffe.Web.Profiles
         public ProductProfile()
         {
             CreateMap<Product, ProductDto>();
+            CreateMap<ProductInventory, ProductInventoryDto>();
             CreateMap<Customer, CustomerDto>();
             CreateMap<CustomerAddress, CustomerAddressDto>();
             CreateMap<SalesOrder, InvoiceDto>();
             CreateMap<SalesOrderItem, SalesOrderItemDto>();
 
             CreateMap<ProductDto, Product>();
+            CreateMap<ProductInventoryDto, ProductInventory>();
             CreateMap<CustomerDto, Customer>();
             CreateMap<CustomerAddressDto, CustomerAddress>();
             CreateMap<InvoiceDto, SalesOrder>();
