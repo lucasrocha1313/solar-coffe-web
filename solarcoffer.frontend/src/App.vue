@@ -1,6 +1,6 @@
 <template>
   <div class="app-menu">
-    <SideMenu/>
+    <SideMenu />
   </div>
   <div class="app-content">
     <router-view />
@@ -11,9 +11,9 @@
 import SideMenu from "./components/SideMenu.vue";
 
 export default {
-    name: "App",
-    components: { SideMenu }
-}
+  name: "App",
+  components: { SideMenu },
+};
 </script>
 
 <style lang="scss">
