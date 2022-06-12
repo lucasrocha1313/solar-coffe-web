@@ -1,16 +1,16 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Inventory from "../views/Inventory.vue";
+import InventoryView from "../views/Inventory.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "home",
-    component: Inventory,
+    component: InventoryView,
   },
   {
     path: "/inventory",
     name: "inventory",
-    component: Inventory,
+    component: InventoryView,
   },
 ];
 
