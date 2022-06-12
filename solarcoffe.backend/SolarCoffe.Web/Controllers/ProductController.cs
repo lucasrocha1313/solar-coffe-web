@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SolarCoffe.Data.Models;
 using SolarCoffe.Services.Product.Interfaces;
 using SolarCoffe.Web.Dtos;
 
@@ -19,6 +20,19 @@ namespace SolarCoffe.Web.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost("/api/product")]
+        public ActionResult AddProduct([FromBody] ProductDto productDto)
+        {
+            if(!ModelState.IsValid) {
+                return BadRequest(ModelState);
+            }
+            
+            _logger.LogInformation($"Adding product {productDto.Name}");
+            var newProduct = _mapper.Map<Product>(productDto);
+            var newProductResponse = _productService.CreateProduct(newProduct);
+            return Ok(newProductResponse);
+        }
+
         [HttpGet("/api/product")]
         public ActionResult GetProduct()
         {
@@ -28,7 +42,8 @@ namespace SolarCoffe.Web.Controllers
         }
 
         [HttpPatch("/api/product/{id}")]
-        public ActionResult ArchiveProduct(int id) {
+        public ActionResult ArchiveProduct(int id)
+        {
             _logger.LogInformation($"Archiving product {id}");
             var archived = _productService.ArchiveProduct(id);
             return Ok(archived);
