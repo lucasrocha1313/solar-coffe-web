@@ -3,10 +3,10 @@
     <h1 id="invetory-title">Inventory Dashboard</h1>
     <hr />
     <div class="inventory-actions">
-      <solar-button @click="showNewProductModel" id="addNewBtn">
+      <solar-button @button:click="showNewProductModel" id="addNewBtn">
         Add new item
       </solar-button>
-      <solar-button @click="showShipmentModel" id="receiveShipmentBtn">
+      <solar-button @button:click="showShipmentModel" id="receiveShipmentBtn">
         Receive Shipment
       </solar-button>
     </div>
@@ -65,7 +65,7 @@ import SolarButton from "@/components/SolarButton.vue";
 import ShipmentModal from "@/components/modals/ShipmentModal.vue";
 import NewProductModal from "@/components/modals/NewProductModal.vue";
 import { IShipment } from "@/types/Shipment";
-import { IProduct} from "@/types/Product";
+import { IProduct } from "@/types/Product";
 import { InventoryService } from "@/services/InventoryService";
 import { ProductService } from "@/services/ProductService";
 
