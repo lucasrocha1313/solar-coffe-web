@@ -56,6 +56,7 @@ export default defineComponent({
   flex-direction: column;
   widows: initial;
   border-radius: 3px;
+  margin: 0 16rem;
 }
 
 .modal-header {
