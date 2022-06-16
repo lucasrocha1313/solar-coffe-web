@@ -42,7 +42,7 @@ export default defineComponent({
   components: { SolarButton, SolarModal },
   name: "ShipmentModal",
   props: {
-    inventory: {
+    inventories: {
       type: Array as () => IProductInventory[],
       required: true,
     },
