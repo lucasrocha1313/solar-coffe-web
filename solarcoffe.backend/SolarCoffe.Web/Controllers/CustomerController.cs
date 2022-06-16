@@ -20,7 +20,7 @@ namespace SolarCoffe.Web.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("/api/customer")]
+        [HttpPost("/api/customers")]
         public ActionResult CreateCustomer([FromBody] CustomerDto customer) {
             if(!ModelState.IsValid) {
                 return BadRequest(ModelState);
@@ -45,7 +45,7 @@ namespace SolarCoffe.Web.Controllers
             return Ok(customersDto);
         }
 
-        [HttpDelete("/api/customers")]
+        [HttpDelete("/api/customers/{id}")]
         public ActionResult DeleteCustomer(int id) {
             _logger.LogInformation($"Deleting Customer {id}");
             var response = _customerService.DeleteCustomer(id);
