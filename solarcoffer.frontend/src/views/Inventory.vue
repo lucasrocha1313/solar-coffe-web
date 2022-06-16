@@ -16,7 +16,7 @@
       <th>Unit Price</th>
       <th>Taxable</th>
       <th>Delete</th>
-      <tr v-for="item in inventory" :key="item.id">
+      <tr v-for="item in inventories" :key="item.id">
         <td>
           {{ item.product.name }}
         </td>
@@ -52,7 +52,7 @@
 
     <shipment-modal
       v-if="isShipmentVisible"
-      :inventory="inventory"
+      :inventories="inventories"
       @save:shipment="saveNewShipment"
       @close="closeModal"
     />
@@ -103,7 +103,7 @@ export default defineComponent({
       this.isNewProductVisible = false;
     },
     async initialize() {
-      this.inventory = await inventoryService.getInventory();
+      this.inventories = await inventoryService.getInventory();
     },
     applyColor(current: number, target: number) {
       if (current <= 0) return "red";
@@ -119,7 +119,7 @@ export default defineComponent({
     return {
       isShipmentVisible: false,
       isNewProductVisible: false,
-      inventory: [],
+      inventories: [],
     };
   },
   async created() {
