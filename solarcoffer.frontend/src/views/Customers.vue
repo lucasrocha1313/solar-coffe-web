@@ -40,6 +40,11 @@
         </td>
       </tr>
     </table>
+    <new-customer-modal
+      v-if="isCustomerModalVisible"
+      @close="closeModal"
+      @save:customer="saveNewCustomer"
+    />
   </div>
 </template>
 
@@ -48,11 +53,12 @@ import { defineComponent } from "vue";
 import SolarButton from "@/components/SolarButton";
 import CustomerService from "@/services/CustomerService";
 import moment from "moment";
+import NewCustomerModal from "@/components/modals/NewCustomerModal";
 
 const customerService = new CustomerService();
 export default defineComponent({
   name: "CustomersView",
-  components: { SolarButton },
+  components: { NewCustomerModal, SolarButton },
   methods: {
     humanizeDate(date) {
       return moment(date).format("MMMM Do YYYY");
@@ -60,8 +66,16 @@ export default defineComponent({
     showNewCustomerModal() {
       this.isCustomerModalVisible = true;
     },
+    closeModal() {
+      this.isCustomerModalVisible = false;
+    },
+    async saveNewCustomer(newCustomer) {
+      await customerService.addCustomer(newCustomer);
+      this.isCustomerModalVisible = false;
+      await this.initialize();
+    },
     async deleteCustomer(id) {
-      customerService.deleteCustomer(id);
+      await customerService.deleteCustomer(id);
       this.initialize();
     },
     async initialize() {
