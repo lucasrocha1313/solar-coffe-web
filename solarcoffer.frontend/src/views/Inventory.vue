@@ -59,41 +59,33 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="js">
 import SolarButton from "@/components/SolarButton.vue";
 import ShipmentModal from "@/components/modals/ShipmentModal.vue";
 import NewProductModal from "@/components/modals/NewProductModal.vue";
-import { IShipment } from "@/types/Shipment";
-import { IProduct } from "@/types/Product";
 import { InventoryService } from "@/services/InventoryService";
 import { ProductService } from "@/services/ProductService";
-
+import CurrencyMixin from "@/mixins/CurrencyMixin.vue";
 const inventoryService = new InventoryService();
 const productService = new ProductService();
 
-export default defineComponent({
+export default {
   name: "InventoryView",
   components: { SolarButton, ShipmentModal, NewProductModal },
+  mixins: [ CurrencyMixin ],
   methods: {
-    currencyUSD(value: number) {
-      if (isNaN(value)) {
-        return "-";
-      }
-      return `$${value.toFixed(2)}`;
-    },
     showNewProductModel() {
       this.isNewProductVisible = true;
     },
     showShipmentModel() {
       this.isShipmentVisible = true;
     },
-    async saveNewProduct(newProduct: IProduct) {
+    async saveNewProduct(newProduct) {
       await productService.save(newProduct);
       this.isNewProductVisible = false;
       await this.initialize();
     },
-    async saveNewShipment(shipment: IShipment) {
+    async saveNewShipment(shipment) {
       await inventoryService.updateInventoryQuantity(shipment);
       this.isShipmentVisible = false;
       await this.initialize();
@@ -105,12 +97,12 @@ export default defineComponent({
     async initialize() {
       this.inventories = await inventoryService.getInventory();
     },
-    applyColor(current: number, target: number) {
+    applyColor(current, target) {
       if (current <= 0) return "red";
       if (Math.abs(current - target) > 8) return "yellow";
       return "green";
     },
-    async archiveProduct(productId: number) {
+    async archiveProduct(productId) {
       await productService.archive(productId);
       await this.initialize();
     },
@@ -125,7 +117,7 @@ export default defineComponent({
   async created() {
     await this.initialize();
   },
-});
+}
 </script>
 
 <style scoped lang="scss">
