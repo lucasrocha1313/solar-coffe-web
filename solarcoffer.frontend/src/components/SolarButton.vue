@@ -2,6 +2,7 @@
   <div class="btn-link">
     <button
       @click="onClick"
+      :disabled="disabled"
       :class="['solar-button', { 'full-width': isFullWidth }]"
       type="button"
     >
@@ -10,22 +11,23 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
+<script>
+export default {
   name: "SolarButton",
   components: {},
   props: {
     link: String,
     isFullWidth: Boolean,
+    disabled: {
+      default: false,
+    },
   },
   methods: {
-    onClick(): void {
+    onClick() {
       this.$emit("button:click");
     },
   },
-});
+};
 </script>
 
 <style scoped lang="scss">
@@ -50,7 +52,7 @@ export default defineComponent({
   }
 
   &:disabled {
-    background: lighten($solar-blue, 15%);
+    background: lighten($solar-gray, 5%);
     border-bottom: 2px solid darken($solar-blue, 20%);
   }
 
