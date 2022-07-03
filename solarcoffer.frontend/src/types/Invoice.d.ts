@@ -2,7 +2,7 @@ import { IProduct } from "@/types/Product";
 
 export interface IInvoice {
   customerId: number;
-  lineItems: ILineItens;
+  salesOrderItems: ILineItens;
   createdOn: Date;
   updatedOn: Date;
 }
