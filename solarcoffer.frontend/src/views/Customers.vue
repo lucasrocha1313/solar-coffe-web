@@ -52,17 +52,15 @@
 import { defineComponent } from "vue";
 import SolarButton from "@/components/SolarButton";
 import CustomerService from "@/services/CustomerService";
-import moment from "moment";
 import NewCustomerModal from "@/components/modals/NewCustomerModal";
+import DateMixin from "@/mixins/DateMixin";
 
 const customerService = new CustomerService();
 export default defineComponent({
   name: "CustomersView",
   components: { NewCustomerModal, SolarButton },
+  mixins: [DateMixin],
   methods: {
-    humanizeDate(date) {
-      return moment(date).format("MMMM Do YYYY");
-    },
     showNewCustomerModal() {
       this.isCustomerModalVisible = true;
     },
