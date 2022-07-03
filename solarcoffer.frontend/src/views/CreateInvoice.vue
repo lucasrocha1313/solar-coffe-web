@@ -80,7 +80,83 @@
         </table>
       </div>
     </div>
-    <div class="invoice-step" v-if="invoiceStep === 3"></div>
+    <div class="invoice-step" v-if="invoiceStep === 3">
+      <h2>Step 3: Review and submit</h2>
+      <solar-button @button:click="submitInvoice">Submit Invoice</solar-button>
+      <hr />
+      <div class="invoice-step-detail" id="invoice" ref="invoice">
+        <div class="invoice-logo">
+          <img
+            id="imgLogo"
+            alt="Solar Coffee Logo"
+            src="../assets/images/solar_coffee_logo.png"
+          />
+          <h3>666 Bagshot Row</h3>
+          <h3>Shire</h3>
+          <h3>Middle Earth</h3>
+          <div class="invoice-orders-list" v-if="lineItems.length">
+            <div class="invoice-header">
+              <h3>Invoice: {{ humanizeDate(new Date()) }}</h3>
+              <h3>
+                Customer:
+                {{
+                  this.selectedCustomer.firstName +
+                  " " +
+                  this.selectedCustomer.lastName
+                }}
+              </h3>
+              <h3>
+                Address: {{ this.selectedCustomer.primaryAddress.addressLine1 }}
+              </h3>
+              <h3 v-if="this.selectedCustomer.primaryAddress.addressLine2">
+                {{ this.selectedCustomer.primaryAddress.addressLine2 }}
+              </h3>
+              <h3>
+                {{ this.selectedCustomer.primaryAddress.city }}
+                {{ this.selectedCustomer.primaryAddress.state }}
+                {{ this.selectedCustomer.primaryAddress.postalCode }}
+              </h3>
+              <h3>
+                {{ this.selectedCustomer.primaryAddress.country }}
+              </h3>
+            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Description</th>
+                  <th>Qty.</th>
+                  <th>Price</th>
+                  <th>Subtotal</th>
+                </tr>
+              </thead>
+              <tr
+                v-for="lineItem in lineItems"
+                :key="`index_${lineItem.product.id}`"
+              >
+                <td>{{ lineItem.product.name }}</td>
+                <td>{{ lineItem.product.description }}</td>
+                <td>{{ lineItem.quantity }}</td>
+                <td>{{ lineItem.product.price }}</td>
+                <td>
+                  {{ currencyUSD(lineItem.product.price * lineItem.quantity) }}
+                </td>
+              </tr>
+              <tr>
+                <th colspan="4"></th>
+                <th>Grand Total</th>
+              </tr>
+              <tfoot>
+                <tr>
+                  <td colspan="4" class="due">Balance due upon receipt:</td>
+                  <td class="price-final">{{ currencyUSD(runningTotal) }}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
     <hr />
     <div class="invoice-steps-actions">
       <solar-button @button:click="prev" :disabled="!canGoPrev"
@@ -99,13 +175,18 @@ import CustomerService from "@/services/CustomerService";
 import { InventoryService } from "@/services/InventoryService";
 import SolarButton from "@/components/SolarButton.vue";
 import CurrencyMixin from "@/mixins/CurrencyMixin";
+import InvoiceService from "@/services/InvoiceService";
+import DateMixin from "@/mixins/DateMixin";
+import html2canvas from "html2canvas";
+import * as JsPDF from "jspdf";
 
 const customerService = new CustomerService();
 const inventoryService = new InventoryService();
+const invoiceService = new InvoiceService();
 export default {
   name: "CreateInvoiceView",
   components: { SolarButton },
-  mixins: [CurrencyMixin],
+  mixins: [CurrencyMixin, DateMixin],
   data() {
     return {
       invoiceStep: 1,
@@ -113,7 +194,7 @@ export default {
         createdOn: new Date(),
         updatedOn: new Date(),
         customerId: 1,
-        lineItems: [],
+        salesOrderItems: [],
       },
       customers: [],
       selectCustomerId: 0,
@@ -140,6 +221,9 @@ export default {
         (a, b) => a + b["product"]["price"] * b["quantity"],
         0
       );
+    },
+    selectedCustomer: function () {
+      return this.customers.find((c) => c.id === this.selectCustomerId);
     },
   },
   created() {
@@ -183,10 +267,31 @@ export default {
       this.invoiceStep = 3;
     },
     startOver() {
-      this.invoice = { customerId: 0, lineItems: [] };
+      this.invoice = { customerId: 0, salesOrderItems: [] };
       this.invoiceStep = 1;
       this.lineItems = [];
       this.selectCustomerId = 0;
+    },
+    async submitInvoice() {
+      this.invoice = {
+        customerId: this.selectCustomerId,
+        salesOrderItems: this.lineItems,
+      };
+      await invoiceService.makeNewInvoice(this.invoice);
+      this.downloadPdf();
+      await this.$router.push("/orders");
+    },
+    downloadPdf() {
+      const pdf = new JsPDF("p", "pt", "a4", true);
+      const invoice = document.getElementById("invoice");
+      const width = this.$refs.invoice.clientWidth;
+      const height = this.$refs.invoice.clientHeight;
+
+      html2canvas(invoice).then((canvas) => {
+        const image = canvas.toDataURL("image/png");
+        pdf.addImage(image, "PNG", 0, 0, width * 0.35, height * 0.35);
+        pdf.save("invoice");
+      });
     },
   },
 };
