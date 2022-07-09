@@ -94,7 +94,7 @@ namespace SolarCoffe.Services.Order.Services
                     IsSuccess = false
                 };
             }
-            order.UpdatedOn = DateTime.Now;
+            order.UpdatedOn = DateTime.UtcNow;
             order.IsPaid = true;
 
             try
