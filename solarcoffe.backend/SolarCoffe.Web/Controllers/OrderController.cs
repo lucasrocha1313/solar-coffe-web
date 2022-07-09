@@ -37,6 +37,8 @@ namespace SolarCoffe.Web.Controllers
             _logger.LogInformation("Generating invoice");
             var order = _mapper.Map<SalesOrder>(invoice);
             order.Customer = _customerService.GetById(invoice.CustomerId);
+            order.CreatedOn = DateTime.UtcNow;
+            order.UpdatedOn = DateTime.UtcNow;
             _orderService.GenerateOpenOrder(order);
             return Ok();
         }
@@ -44,7 +46,7 @@ namespace SolarCoffe.Web.Controllers
         [HttpGet("/api/order")]
         public ActionResult GetOrders() {
             var order = _orderService.GetOrders();
-            var orderDto = _mapper.Map<OrderDto>(order);
+            var orderDto = _mapper.Map<List<OrderDto>>(order);
             return Ok(orderDto);
         }
 

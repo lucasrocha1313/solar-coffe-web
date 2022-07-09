@@ -14,6 +14,7 @@ namespace SolarCoffe.Web.Profiles
             CreateMap<CustomerAddress, CustomerAddressDto>();
             CreateMap<SalesOrder, InvoiceDto>();
             CreateMap<SalesOrderItem, SalesOrderItemDto>();
+            CreateMap<SalesOrder, OrderDto>();
 
             CreateMap<ProductDto, Product>();
             CreateMap<ProductInventoryDto, ProductInventory>();
@@ -21,6 +22,7 @@ namespace SolarCoffe.Web.Profiles
             CreateMap<CustomerAddressDto, CustomerAddress>();
             CreateMap<InvoiceDto, SalesOrder>();
             CreateMap<SalesOrderItemDto, SalesOrderItem>();
+            CreateMap<OrderDto, SalesOrder>();
             
         }        
     }
