@@ -178,7 +178,7 @@ import CurrencyMixin from "@/mixins/CurrencyMixin";
 import InvoiceService from "@/services/InvoiceService";
 import DateMixin from "@/mixins/DateMixin";
 import html2canvas from "html2canvas";
-import * as JsPDF from "jspdf";
+import { jsPDF } from "jspdf";
 
 const customerService = new CustomerService();
 const inventoryService = new InventoryService();
@@ -282,7 +282,7 @@ export default {
       await this.$router.push("/orders");
     },
     downloadPdf() {
-      const pdf = new JsPDF("p", "pt", "a4", true);
+      const pdf = new jsPDF("p", "pt", "a4", true);
       const invoice = document.getElementById("invoice");
       const width = this.$refs.invoice.clientWidth;
       const height = this.$refs.invoice.clientHeight;
