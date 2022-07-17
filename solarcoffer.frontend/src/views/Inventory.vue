@@ -2,6 +2,9 @@
   <div class="inventory-container">
     <h1 id="invetory-title">Inventory Dashboard</h1>
     <hr />
+
+    <inventory-chart />
+
     <div class="inventory-actions">
       <solar-button @button:click="showNewProductModel" id="addNewBtn">
         Add new item
@@ -66,12 +69,13 @@ import NewProductModal from "@/components/modals/NewProductModal.vue";
 import { InventoryService } from "@/services/InventoryService";
 import { ProductService } from "@/services/ProductService";
 import CurrencyMixin from "@/mixins/CurrencyMixin.vue";
+import InventoryChart from "@/components/charts/InventoryChart";
 const inventoryService = new InventoryService();
 const productService = new ProductService();
 
 export default {
   name: "InventoryView",
-  components: { SolarButton, ShipmentModal, NewProductModal },
+  components: { InventoryChart, SolarButton, ShipmentModal, NewProductModal},
   mixins: [ CurrencyMixin ],
   methods: {
     showNewProductModel() {
@@ -96,6 +100,7 @@ export default {
     },
     async initialize() {
       this.inventories = await inventoryService.getInventory();
+      await this.$store.dispatch("assignSnapshots");
     },
     applyColor(current, target) {
       if (current <= 0) return "red";
