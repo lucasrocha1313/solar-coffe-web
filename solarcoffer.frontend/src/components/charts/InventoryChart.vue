@@ -14,6 +14,7 @@
 <script>
 import { sync } from "vuex-pathify";
 import VueApexCharts from "vue3-apexcharts";
+import moment from "moment";
 
 export default {
   name: "InventoryChart",
@@ -39,7 +40,9 @@ export default {
           curve: "smooth",
         },
         xaxis: {
-          categories: this.snapshotTimeline.timeline,
+          categories: this.snapshotTimeline.timeline.map((t) =>
+            moment(t).format("YYYY-MM-DD HH:mm:ss")
+          ),
           type: "datetime",
         },
       };
