@@ -33,7 +33,7 @@ namespace SolarCoffe.Services.Inventory.Services
 
         public List<ProductInventorySnapshot> GetSnaphostHistory()
         {
-            var earliest = DateTime.Now - TimeSpan.FromHours(6);
+            var earliest = DateTime.UtcNow - TimeSpan.FromHours(6);
             return _db.ProductInventorySnapshots
                 .Include(pis => pis.Product)
                 .Where(snap => snap.SnapshotTime > earliest && !snap.Product.IsArchived)
