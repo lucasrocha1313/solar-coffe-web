@@ -6,7 +6,7 @@
       <thead>
         <tr>
           <th>Customer Id</th>
-          <th>Customer Id</th>
+          <th>Order Id</th>
           <th>Order Total</th>
           <th>Order Status</th>
           <th>Mark Complete</th>
